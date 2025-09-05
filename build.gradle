@@ -1,0 +1,79 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+java {
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // JUnit (sebagai test runner utama untuk Cucumber)
+    testImplementation 'junit:junit:4.13.2' // Menggunakan JUnit 4
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.10.0' //
+
+    // Cucumber
+    testImplementation 'io.cucumber:cucumber-java:7.18.0'
+    testImplementation 'io.cucumber:cucumber-junit:7.18.0'
+
+    // Selenium WebDriver
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.20.0'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.8.0' // Otomatis mengelola driver browser
+
+    // Logging
+    testImplementation 'org.slf4j:slf4j-api:2.0.13'
+    testImplementation 'ch.qos.logback:logback-classic:1.5.14' // Implementasi Logback
+
+    // Hamcrest (untuk assertions yang lebih ekspresif)
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+}
+
+// Resolusi dependensi eksplisit untuk mengatasi kerentanan
+configurations.all {
+    resolutionStrategy {
+        force 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+        force 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+        force 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+        force 'org.bouncycastle:bcprov-jdk18on:1.78'
+        force 'ch.qos.logback:logback-classic:1.5.14'
+        force 'ch.qos.logback:logback-core:1.5.14'
+        force 'commons-codec:commons-codec:1.15'
+        force 'org.apache.commons:commons-lang3:3.15.0'
+        //force 'org.apache.commons:commons-lang3:3.16.0' // Diperbarui untuk mengatasi CVE
+    }
+}
+
+// Konfigurasi tugas 'test' untuk menggunakan JUnit Platform (untuk JUnit 4 + Vintage Engine)
+tasks.withType(Test).configureEach {
+    useJUnitPlatform() // Menggunakan JUnit Platform sebagai runner untuk semua tugas Test
+    // Menampilkan event test di konsol
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        showCauses true
+        showStackTraces true
+    }
+    // Konfigurasi laporan (pastikan path benar)
+    reports.html.outputLocation = layout.buildDirectory.dir("reports/tests/web").get().asFile
+    reports.junitXml.outputLocation = layout.buildDirectory.dir("test-results/web").get().asFile
+}
+
+// Task kustom untuk menjalankan tes Web UI
+tasks.register('webTests', Test) {
+    description = 'Runs only Web UI Cucumber tests.'
+    group = 'Verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    setIncludes(['**/WebTestsRunner.class']) // Hanya menyertakan WebTestRunner
+    // Mengatur properti sistem untuk Cucumber runner jika diperlukan (misal: filter tags via properties)
+    systemProperty 'cucumber.filter.tags', '@web'
+    reports.html.outputLocation = layout.buildDirectory.dir("reports/tests/web").get().asFile
+    reports.junitXml.outputLocation = layout.buildDirectory.dir("test-results/web").get().asFile
+}
