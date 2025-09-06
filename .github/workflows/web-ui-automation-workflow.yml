@@ -6,12 +6,11 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-    
+  
 jobs:
-build:
-  runs-on: ubuntu-lateest
-
-    steps:
+    build:
+     runs-on: ubuntu-lateest
+     steps:
       # download repository
       - uses: actions/checkout@v4
     
@@ -27,9 +26,9 @@ build:
         uses: browser-actions/setup-chrome@v2.1.0
 
       # setup gradle
-       - name: Setup Gradle
-         run: chmod +x gradlew
+      - name: Setup Gradle
+        run: chmod +x gradlew
 
       # execute gradle
-       - name: Execute Test
-         run: ./gradlew webtest
+      - name: Execute Test
+        run: ./gradlew webtest
