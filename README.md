@@ -8,3 +8,4 @@ Berikut adalah rincian dari setiap skenario:
 2. Scenario Navigate to Login page: Tujuan untuk memverifikasi fungsi navigasi dasar, yaitu memastikan user dapat pindah dari halaman utama ke halaman login dengan mengklik link Login yang tersedia.
 3. Scenario Login with invalid credentials: Ini adalah skenario pengujian negatif untuk memeriksa bagaimana sistem menangani input yang salah. Skenario ini memastikan pesan error yang tepat (Wrong password.) muncul saat user mencoba login dengan credentials yang tidak valid.
 4. Scenario Login with very long username (conceptual boundary test) Ini adalah contoh pengujian boundary. Tujuannya adalah untuk melihat bagaimana sistem merespons input yang ekstrem atau tidak biasa, seperti nama user yang sangat panjang. Ini membantu mengidentifikasi potensi error pada validasi input di sisi server atau client.
+menambahkan yml test
