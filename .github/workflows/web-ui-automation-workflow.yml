@@ -12,24 +12,24 @@ build:
   runs-on: ubuntu-lateest
 
     steps:
-    # download repository
-    - uses: actions/checkout@v4
+      # download repository
+      - uses: actions/checkout@v4
     
-    # setup Java
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      # setup Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-    # setup Browser
-    - name: Setup Chrome
-      uses: browser-actions/setup-chrome@v2.1.0
+      # setup Browser
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v2.1.0
 
-    # setup gradle
-     - name: Setup Gradle
-       run: chmod +x gradlew
+      # setup gradle
+       - name: Setup Gradle
+         run: chmod +x gradlew
 
-    # execute gradle
-      - name: Execute Test
-        run: ./gradlew webtest
+      # execute gradle
+       - name: Execute Test
+         run: ./gradlew webtest
