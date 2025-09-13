@@ -30,6 +30,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      # give gradle permission
+      - name: Execute Test
+        run: chmod +x gradlew  # Make gradlew executable
+
       # execute gradle
       - name: Execute Test
         run: ./gradlew webtest
